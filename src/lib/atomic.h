@@ -4,6 +4,11 @@
 #ifndef DONT_MULTI_INCLUDE_MDBM_ATOMIC_H
 #define DONT_MULTI_INCLUDE_MDBM_ATOMIC_H
 
+#ifdef __linux__
+/* For gettid() needs to be define before including unistd.h */
+#define _GNU_SOURCE
+#endif
+
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -88,12 +93,9 @@ static inline void atomic_pause() {
 }
 
 
+#ifndef __linux__
 /* returns (linux-specific) thread-id (for single-thread processes it's just PID) */
 static inline uint32_t gettid() {
-  /* AUTO_TSC("gettid()"); */
-#ifdef __linux__
-  return syscall(SYS_gettid);
-#else
   /* Horrible hack, but pthread_self is not unique across processes, */
   /* and some OS don't expose any other unique id. */
   /* xor-fold pthread_self() pointer down to 16-bits */
@@ -105,8 +107,8 @@ static inline uint32_t gettid() {
   /* NOTE: tiger and later OSX have PID #s up to 10k. */
   tid = ((pself & 0xffff) << 16) + getpid();
   return tid;
-#endif
 }
+#endif /* __linux__ */
 
 #ifdef __cplusplus
 }

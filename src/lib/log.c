@@ -1,5 +1,6 @@
 /* Copyright 2013 Yahoo! Inc.                                         */
 /* See LICENSE in the root of the distribution for licensing details. */
+#include "atomic.h"
 
 #include <errno.h>
 #include <syslog.h>
@@ -11,7 +12,6 @@
 #include <sys/time.h>
 #include <unistd.h>
 
-#include "atomic.h"
 #include "mdbm_log.h"
 
 /* not used...
