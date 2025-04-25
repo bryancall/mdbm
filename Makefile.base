@@ -11,8 +11,8 @@ UNAME := $(shell uname)
 DISABLE_TSC=1
 # Enable 64-bit off_t
 COMP_FLAGS += -D_FILE_OFFSET_BITS=64
-# For Linux, use openssl.
-COMP_FLAGS += -DUSE_OPENSSL
+# For Linux, use openssl, add no-deprecated-declarations for OpenSSL 3.x
+COMP_FLAGS += -DUSE_OPENSSL -Wno-deprecated-declarations
 # To provide internal MD5 and SHA1 hash functions
 #COMP_FLAGS += -DPROVIDE_SSL_HASHES
 COMP_FLAGS += -DALLOW_MLOCK_RESET
